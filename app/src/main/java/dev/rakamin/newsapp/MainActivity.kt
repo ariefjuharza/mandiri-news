@@ -36,6 +36,12 @@ class MainActivity : AppCompatActivity() {
     private lateinit var runnable: Runnable
     private lateinit var newsRecyclerView: RecyclerView
 
+    private var currentPage = 1
+    private var isFetching = false
+    private var totalResults = 0
+    private lateinit var newsAdapter: NewsAdapter
+    private lateinit var linearLayoutManager: LinearLayoutManager
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
@@ -50,16 +56,77 @@ class MainActivity : AppCompatActivity() {
 
         viewPager = binding.vpHeadlineNews
         newsRecyclerView = binding.rvListNews
-        newsRecyclerView.layoutManager = LinearLayoutManager(this)
+        linearLayoutManager = LinearLayoutManager(this)
+        newsRecyclerView.layoutManager = linearLayoutManager
 
-        fetchHeadlineData()
+        setupRecyclerView()
+        setupScrollListener()
+
         fetchAllNewsData()
+        fetchHeadlineData()
 
         binding.ivAccount.setOnClickListener {
             val aboutIntent = Intent(this@MainActivity, AboutActivity::class.java)
             startActivity(aboutIntent)
         }
 
+    }
+
+    private fun fetchAllNewsData() {
+        if (isFetching) return
+        isFetching = true
+
+        lifecycleScope.launch {
+            val call = ApiClient.instance.getAllNews(query = "business", page = currentPage)
+            call.enqueue(object : Callback<NewsResponse> {
+                override fun onResponse(call: Call<NewsResponse>, response: Response<NewsResponse>) {
+                    if (response.isSuccessful) {
+                        val articles = response.body()?.articles
+                        totalResults = response.body()?.totalResults ?: 0
+
+                        if (!articles.isNullOrEmpty()) {
+                            if (currentPage == 1) {
+                                newsAdapter.setArticles(articles)
+                            } else {
+                                newsAdapter.addArticles(articles)
+                            }
+                        } else {
+                            Log.d(TAG, "All news Response successful but article list is empty.")
+                        }
+                    } else {
+                        Log.e(TAG, "All news response not successful: ${response.code()}")
+                    }
+                    isFetching = false
+                }
+
+                override fun onFailure(call: Call<NewsResponse>, t: Throwable) {
+                    Log.e(TAG, "All news API Call Failed: ${t.message}", t)
+                    isFetching = false
+                }
+            })
+        }
+    }
+
+    private fun setupRecyclerView() {
+        newsAdapter = NewsAdapter(mutableListOf())
+        newsRecyclerView.adapter = newsAdapter
+    }
+
+    private fun setupScrollListener() {
+        newsRecyclerView.addOnScrollListener(object : RecyclerView.OnScrollListener() {
+            override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
+                super.onScrolled(recyclerView, dx, dy)
+
+                val visibleItemCount = linearLayoutManager.childCount
+                val totalItemCount = linearLayoutManager.itemCount
+                val firstVisibleItemPosition = linearLayoutManager.findFirstVisibleItemPosition()
+
+                if (!isFetching && (visibleItemCount + firstVisibleItemPosition) >= totalItemCount && firstVisibleItemPosition >= 0 && totalItemCount < totalResults) {
+                    currentPage++
+                    fetchAllNewsData()
+                }
+            }
+        })
     }
 
     private fun fetchHeadlineData() {
@@ -87,30 +154,6 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    private fun fetchAllNewsData() {
-        lifecycleScope.launch {
-            val call = ApiClient.instance.getAllNews(query = "business")
-            call.enqueue(object : Callback<NewsResponse> {
-                override fun onResponse(call: Call<NewsResponse>, response: Response<NewsResponse>) {
-                    if (response.isSuccessful) {
-                        val articles = response.body()?.articles
-                        if (!articles.isNullOrEmpty()) {
-                            setupRecyclerView(articles)
-                        } else {
-                            Log.d(TAG, "All news Response successful but article list is empty.")
-                        }
-                    } else {
-                        Log.e(TAG, "All news response not successful: ${response.code()}")
-                    }
-                }
-
-                override fun onFailure(call: Call<NewsResponse>, t: Throwable) {
-                    Log.e(TAG, "All news API Call Failed: ${t.message}", t)
-                }
-            })
-        }
-    }
-
     private fun setupViewPager(articles: List<Articles>) {
         val adapter = HeadlineAdapter(articles)
         viewPager.adapter = adapter
@@ -121,11 +164,6 @@ class MainActivity : AppCompatActivity() {
 
         setupAutoSwipe()
 
-    }
-
-    private fun setupRecyclerView(articles: List<Articles>) {
-        val adapter = NewsAdapter(articles)
-        newsRecyclerView.adapter = adapter
     }
 
     private fun setupAutoSwipe() {

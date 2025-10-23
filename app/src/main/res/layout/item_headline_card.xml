@@ -22,7 +22,7 @@
             android:layout_width="0dp"
             android:layout_height="0dp"
             android:scaleType="centerCrop"
-            app:layout_constraintDimensionRatio="H,4:3"
+            app:layout_constraintDimensionRatio="H,16:9"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
@@ -59,7 +59,6 @@
                 android:id="@+id/tvNewsAuthor"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
                 android:layout_marginEnd="4dp"
                 android:drawablePadding="4dp"
                 android:ellipsize="end"
@@ -79,7 +78,6 @@
                 android:id="@+id/tvPublishedAt"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
                 android:drawablePadding="4dp"
                 android:ellipsize="end"
                 android:gravity="center_vertical"
@@ -93,7 +91,6 @@
                 tools:text="23 jam yang lalu" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
-
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

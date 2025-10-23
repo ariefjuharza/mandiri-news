@@ -3,7 +3,7 @@
         <shape
             android:innerRadius="0dp"
             android:shape="ring"
-            android:thickness="7dp"
+            android:thickness="4dp"
             android:useLevel="false">
             <solid android:color="@color/mandiri_blue" />
         </shape>

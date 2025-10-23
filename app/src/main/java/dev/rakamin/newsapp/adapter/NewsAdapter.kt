@@ -44,4 +44,17 @@ class NewsAdapter(private val listNews: List<Articles>) : RecyclerView.Adapter<N
     }
 
     override fun getItemCount() = listNews.size
+
+    fun setArticles(newArticles: List<Articles>) {
+        (listNews as MutableList).clear()
+        listNews.addAll(newArticles)
+        notifyDataSetChanged()
+    }
+
+    fun addArticles(newArticles: List<Articles>) {
+        val oldSize = listNews.size
+        (listNews as MutableList).addAll(newArticles)
+        notifyItemRangeInserted(oldSize, newArticles.size)
+    }
+
 }
