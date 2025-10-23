@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="black">#FF000000</color>
+    <color name="white">#FFFFFFFF</color>
+
+    <color name="mandiri_blue">#003D79</color>
+    <color name="mandiri_yellow">#FFB700</color>
+    <color name="mandiri_sky_blue">#67B2E8</color>
+    <color name="mandiri_orange">#EA7200</color>
+    <color name="mandiri_grey">#B6B8BA</color>
+
+</resources>

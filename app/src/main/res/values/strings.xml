@@ -1,0 +1,9 @@
+<resources>
+    <string name="app_name">Mandiri News</string>
+    <string name="berita_terbaru">Berita Terkini</string>
+    <string name="semua_berita">Semua Berita</string>
+    <string name="my_name">Arif Juharza</string>
+    <string name="my_email">ariefjuharza@gmail.com</string>
+    <string name="my_quote">Jaya… Jaya… Jaya…</string>
+    <string name="gagal_buka_linkedin">Ini tidak mungkin. %1$s</string>
+</resources>
