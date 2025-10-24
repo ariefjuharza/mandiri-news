@@ -12,7 +12,6 @@ import dev.rakamin.newsapp.model.Articles
 import dev.rakamin.newsapp.utils.Utils
 
 class HeadlineAdapter(private val headlines: List<Articles>) : RecyclerView.Adapter<HeadlineAdapter.HeadlineViewHolder>() {
-
     inner class HeadlineViewHolder(val binding: ItemHeadlineCardBinding) : RecyclerView.ViewHolder(binding.root) {
         fun bind(headline: Articles) {
             binding.tvNewsTitle.text = headline.title
@@ -30,7 +29,6 @@ class HeadlineAdapter(private val headlines: List<Articles>) : RecyclerView.Adap
                 intent.putExtra(DetailActivity.EXTRA_NEWS, headline)
                 itemView.context.startActivity(intent)
             }
-
         }
     }
 

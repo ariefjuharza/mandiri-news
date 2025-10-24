@@ -12,7 +12,6 @@ import dev.rakamin.newsapp.model.Articles
 import dev.rakamin.newsapp.utils.Utils
 
 class NewsAdapter(private val listNews: List<Articles>) : RecyclerView.Adapter<NewsAdapter.NewsViewHolder>() {
-
     inner class NewsViewHolder(val binding: ItemRowNewsBinding) : RecyclerView.ViewHolder(binding.root) {
         fun bind(news: Articles) {
             binding.tvNewsTitle.text = news.title

@@ -8,7 +8,10 @@ object Utils {
     fun formatNewsDate(oldDate: String?): String {
         if (oldDate == null) return ""
 
-        val inputFormat = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'", Locale.getDefault())
+        val inputFormat = SimpleDateFormat(
+            "yyyy-MM-dd'T'HH:mm:ss'Z'",
+            Locale.getDefault()
+        )
 
         val indonesiaLocale = Locale.Builder().setLanguage("id").setRegion("ID").build()
         val outputFormat = SimpleDateFormat("dd MMM, yyyy", indonesiaLocale)

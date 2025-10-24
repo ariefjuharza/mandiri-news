@@ -28,7 +28,7 @@
             app:layout_constraintTop_toTopOf="parent"
             app:shapeAppearanceOverlay="@style/ShapeAppearanceOverlay.App.CornerSize10Percent"
             app:strokeWidth="2dp"
-            tools:srcCompat="@drawable/livin_grey" />
+            tools:srcCompat="@drawable/livin_01_master_brand_logo" />
 
         <com.google.android.material.textview.MaterialTextView
             android:id="@+id/tvNewsTitle"
